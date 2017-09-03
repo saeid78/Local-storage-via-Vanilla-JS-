@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+  <title>Who is the driver</title>
+<style>
+  body{
+    background: #333;
+    margin-top: 70px;
+    color:#fff;
+  }
+  .submit{
+    background-color :green;
+  }
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+      <div class="row">
+          <div class="col-md-6 offset-md-3">
+              <h1 class=" display-4 text-center mb-3">Who should drive?</h1>
+              <ul id="names">
+
+              </ul>
+              <div class="form-group">
+
+                  <input type="text" class="form-control form-control-lg mb-3" id="newdriver" placeholder="Add Driver">
+
+                  <button class="btn btn-success btn-block mb-2" id="add">+</button><br>
+
+                  <button class="btn btn-primary btn-block mb-2" id="pick-driver">Who's Driver?</button><br>
+                  <button class="btn btn-danger btn-block mb-2" id="delete-driver">Delete Driver List</button><br>
+
+
+              </div>
+              <div id="result">
+
+              </div>
+      </div>
+    </div>
+</div>
+    <script>
+      // Variables
+
+      let add = document.querySelector('#add');
+      let newDriver = document.querySelector('#newdriver');
+      let pickDriver = document.querySelector('#pick-driver');
+      let listDriver = document.querySelector('#names');
+      let driver = document.querySelector('#result');
+      let drivers = [];
+      let del = document.querySelector('#delete-driver');
+
+      // Shuffling the array
+
+
+      var shuffle = function (arr) {
+          // Create a clone of the array so that we don't shuffle the original one
+          var arrClone = arr.slice(0);
+          // Shuffle the array
+          return arrClone.sort(function() {
+              return Math.random() - 0.5;
+          })
+      }
+      //Event Listeners
+
+      add.addEventListener('click', function(e) {
+           e.preventDefault();
+           listDriver.innerHTML += '<li>' + newDriver.value +'</li>';
+           drivers.push(newDriver.value);
+
+           newDriver.value= '';
+           newDriver.focus();
+           localStorage.setItem('pdriver', drivers.toString());
+
+          //console.log(drivers);
+
+      }, false);
+
+      // shuffle the driver
+      pickDriver.addEventListener('click', function(e){
+
+        e.preventDefault();
+        //console.log('Clicked!!!');
+      let randomaize = shuffle(drivers);
+      driver.innerHTML = '<h4>the Driver is :   '  +  randomaize[0] + '</h4>';
+ 
+
+      }, false);
+
+      // clear localStorage
+        del.addEventListener('click', function(e) {
+         console.log('Clicked!!!');
+
+            listDriver.innerHTML= '';
+           localStorage.removeItem('pdriver');
+           driver.innerHTML = '';
+        }, false);
+
+      let savedrivers = localStorage.getItem('pdriver');
+       console.log(savedrivers);
+      if(savedrivers) {
+        drivers = savedrivers.split(',');
+        console.log(drivers);
+        for (var i=0; i < drivers.length; i++) {
+           listDriver.innerHTML += '<li>' + drivers[i] + '</li>';
+        }
+      }
+
+
+    </script>
+</body>
+</html>
